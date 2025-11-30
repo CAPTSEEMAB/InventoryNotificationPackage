@@ -7,7 +7,7 @@ name = "captseemab-inventory-notifications"
 version = "0.1.0"
 description = "Lightweight SQS/SNS notification utilities used by the Inventory API"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 license = { text = "MIT" }
 authors = [ { name = "Seemab Shaikh" } ]
 dependencies = [
