@@ -28,7 +28,6 @@ jobs:
           name: dist
           path: dist
 
-  # User requested to skip TestPyPI and publish directly to PyPI on tag pushes.
   publish-pypi:
     needs: build
     # Run on tag pushes (refs/tags/v*) so a tag push goes straight to PyPI
@@ -50,6 +49,7 @@ jobs:
       - name: Publish to PyPI
         env:
           TWINE_USERNAME: __token__
-          # Use a PyPI API token stored as the repository secret PYPI_API_TOKEN
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          # Using the repository secret present in your repo settings (per screenshot)
+          # Secret name: INVENTORYNOTIFICATIONSCI
+          TWINE_PASSWORD: ${{ secrets.INVENTORYNOTIFICATIONSCI }}
         run: python -m twine upload dist/* -u "$TWINE_USERNAME" -p "$TWINE_PASSWORD"
