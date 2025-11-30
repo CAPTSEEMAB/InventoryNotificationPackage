@@ -9,21 +9,25 @@ from botocore.exceptions import ClientError
 
 class SQSClient:
 
-    def __init__(self, region: Optional[str] = None):
+    def __init__(self, session: Optional[Any] = None, region: Optional[str] = None):
+      
+        self._session = session
         self.region = region or os.getenv('AWS_SQS_REGION', 'us-east-1')
-        self.sqs_client = boto3.client(
-            'sqs',
-            aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-            aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-            region_name=self.region
-        )
+        # prefer session if provided (allows assume-role / explicit creds)
+        if session is not None:
+            # session is expected to be a boto3.Session or compatible object
+            self.sqs_client = session.client('sqs', region_name=self.region)
+            self._sts_client = session.client('sts', region_name=self.region)
+        else:
+            self.sqs_client = boto3.client('sqs', region_name=self.region)
+            self._sts_client = boto3.client('sts', region_name=self.region)
+
         self.account_id = self._get_account_id()
         self._queue_urls: Dict[str, str] = {}
 
     def _get_account_id(self) -> str:
         try:
-            sts = boto3.client('sts')
-            return sts.get_caller_identity()['Account']
+            return self._sts_client.get_caller_identity()['Account']
         except Exception:
             return "unknown"
 

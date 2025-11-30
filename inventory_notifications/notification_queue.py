@@ -14,8 +14,13 @@ class NotificationQueueService:
     direct publish if queuing is disabled or fails.
     """
 
-    def __init__(self, sqs_client: Optional[SQSClient] = None):
-        self.sqs_client = sqs_client or SQSClient()
+    def __init__(self, sqs_client: Optional[SQSClient] = None, session: Optional[Any] = None):
+   
+        if sqs_client is not None:
+            self.sqs_client = sqs_client
+        else:
+            self.sqs_client = SQSClient(session=session)
+
         self.enabled = os.getenv('SQS_ENABLE_NOTIFICATIONS', 'true').lower() == 'true'
         self.notification_queue = os.getenv('AWS_SQS_QUEUE_NAME', 'notification-processing-queue')
         self.dlq_queue = os.getenv('AWS_SQS_DLQ_NAME', 'notification-dead-letter-queue')
