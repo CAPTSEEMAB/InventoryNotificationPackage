@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=65.5.1", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "captseemab-inventory-notifications"
+version = "0.1.0"
+description = "Lightweight SQS/SNS notification utilities used by the Inventory API"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [ { name = "Seemab Shaikh" } ]
+dependencies = [
+  "boto3>=1.26",
+  "pydantic>=1.10"
+]
+
+[project.urls]
+Homepage = "https://github.com/CAPTSEEMAB/InventoryDeployment"
+Repository = "https://github.com/CAPTSEEMAB/InventoryDeployment"
