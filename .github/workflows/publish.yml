@@ -38,7 +38,7 @@ jobs:
       - name: Publish to TestPyPI
         env:
           TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          TWINE_PASSWORD: ${{ secrets.inventorynotificationsci }}
         run: python -m twine upload --repository testpypi dist/* -u "$TWINE_USERNAME" -p "$TWINE_PASSWORD"
 
   publish-pypi:
@@ -56,5 +56,5 @@ jobs:
       - name: Publish to PyPI
         env:
           TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+          TWINE_PASSWORD: ${{ secrets.inventorynotificationsci }}
         run: python -m twine upload dist/* -u "$TWINE_USERNAME" -p "$TWINE_PASSWORD"
