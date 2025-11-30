@@ -28,33 +28,11 @@ jobs:
           name: dist
           path: dist
 
-  publish-testpypi:
-    needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download built distributions
-        uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-      - name: Install twine
-        run: python -m pip install --upgrade pip && pip install twine
-      - name: Publish to TestPyPI
-        env:
-          TWINE_USERNAME: __token__
-          # Use a TestPyPI API token stored as the repository secret TEST_PYPI_API_TOKEN
-          TWINE_PASSWORD: ${{ secrets.TEST_PYPI_API_TOKEN }}
-        run: python -m twine upload --repository testpypi dist/* -u "$TWINE_USERNAME" -p "$TWINE_PASSWORD"
-
+  # User requested to skip TestPyPI and publish directly to PyPI on tag pushes.
   publish-pypi:
     needs: build
-    if: github.event_name == 'release' && github.event.release != null
+    # Run on tag pushes (refs/tags/v*) so a tag push goes straight to PyPI
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
