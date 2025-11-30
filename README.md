@@ -28,3 +28,4 @@ Build package:
 Upload to TestPyPI:
 
     python -m twine upload --repository testpypi dist/* -u __token__ -p <TEST_PYPI_TOKEN>
+# InventoryNotificationPackage
